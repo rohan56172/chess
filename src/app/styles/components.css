@@ -1,0 +1,456 @@
+/* --- CHESS BOARD --- */
+.chess-board-container {
+  background: linear-gradient(135deg, #2d2422 0%, #1a1614 100%);
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7),
+              inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  max-width: 850px;
+  max-height: 850px;
+  margin: 0 auto;
+}
+
+.chess-board-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.2);
+}
+
+/* --- SQUARE --- */
+.square {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.square--light {
+  background-color: var(--color-square-light);
+}
+
+.square--dark {
+  background-color: var(--color-square-dark);
+}
+
+.square--selected {
+  background-color: var(--color-square-selected) !important;
+  box-shadow: inset 0 0 0 3px #f7c631;
+}
+
+.square--last-move-light {
+  background-color: #cdd26a !important;
+  box-shadow: inset 0 0 0 2px rgba(170, 162, 58, 0.5);
+}
+
+.square--last-move-dark {
+  background-color: #aaa23a !important;
+  box-shadow: inset 0 0 0 2px rgba(170, 162, 58, 0.5);
+}
+
+/* --- LEGAL MOVE INDICATORS --- */
+.legal-move-indicator {
+  position: absolute;
+  width: clamp(20%, 28px, 30%);
+  height: clamp(20%, 28px, 30%);
+  background-color: rgba(0, 0, 0, 0.15);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.2);
+}
+
+.legal-move-capture {
+  position: absolute;
+  inset: 0;
+  border: clamp(2px, 0.5vw, 4px) solid rgba(0, 0, 0, 0.15);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/*  CASTLING INDICATOR */
+.castling-indicator {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  animation: castlingPulse 2s ease-in-out infinite;
+}
+
+.castling-indicator-inner {
+  width: clamp(35%, 40px, 45%);
+  height: clamp(35%, 40px, 45%);
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.9) 0%, rgba(245, 158, 11, 0.9) 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(16px, 2vw, 24px);
+  box-shadow: 
+    0 0 0 clamp(2px, 0.3vw, 3px) rgba(251, 191, 36, 0.6),
+    0 4px 12px rgba(251, 191, 36, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  animation: castlingRotate 3s linear infinite;
+}
+
+@keyframes castlingPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+@keyframes castlingRotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* --- COORDINATES --- */
+.coordinate {
+  position: absolute;
+  font-weight: 700;
+  user-select: none;
+}
+
+.coordinate--row {
+  top: 2px;
+  left: 4px;
+}
+
+.coordinate--col {
+  bottom: 2px;
+  right: 4px;
+}
+
+.coordinate--light {
+  color: var(--color-square-dark);
+}
+
+.coordinate--dark {
+  color: var(--color-square-light);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Mobile optimizations */
+@media (max-width: 767px) {
+  .square--selected {
+    box-shadow: inset 0 0 0 2px #f7c631;
+  }
+
+  .legal-move-indicator {
+    width: 25%;
+    height: 25%;
+  }
+
+  .legal-move-capture {
+    border-width: 2px;
+  }
+
+  .castling-indicator-inner {
+    font-size: 14px;
+  }
+}
+
+/* --- PLAYER PANEL --- */
+.player-panel {
+  background: var(--color-chess-card);
+  border-radius: 8px;
+  padding: 8px;
+  border: 2px solid transparent;
+  transition: all 0.3s;
+  width: 100%;
+}
+
+.player-panel--active {
+  border-color: var(--color-chess-accent);
+}
+
+.player-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.player-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.player-avatar--white {
+  background: #e5e7eb;
+  color: #1f2937;
+}
+
+.player-avatar--black {
+  background: #1f2937;
+  color: white;
+}
+
+.player-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.player-name {
+  color: white;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.player-color-label {
+  color: #9ca3af;
+  font-size: 10px;
+  line-height: 1.2;
+}
+
+.material-advantage {
+  color: var(--color-chess-accent);
+  font-size: 11px;
+  font-weight: bold;
+  background: rgba(74, 222, 128, 0.2);
+  padding: 2px 5px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.captured-pieces {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 4px;
+  border-radius: 4px;
+  min-height: 28px;
+}
+
+.captured-piece {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+/* --- MOVE HISTORY --- */
+.move-history {
+  background: var(--color-chess-card);
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.move-history-header {
+  padding: 12px 16px;
+  background: var(--color-chess-header);
+  border-bottom: 1px solid #4b5563;
+  flex-shrink: 0;
+}
+
+.move-history-title {
+  color: white;
+  font-weight: bold;
+  font-size: 15px;
+  margin-bottom: 2px;
+}
+
+.move-history-count {
+  color: #9ca3af;
+  font-size: 12px;
+}
+
+.move-history-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px;
+  min-height: 0;
+}
+
+.move-history-empty {
+  text-align: center;
+  padding-top: 80px;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.move-pair {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: transparent;
+  transition: background 0.2s;
+}
+
+.move-pair--current {
+  background: rgba(74, 222, 128, 0.2);
+}
+
+.move-pair:not(.move-pair--current):hover {
+  background: var(--color-chess-header);
+}
+
+.move-number {
+  width: 32px;
+  color: #9ca3af;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.move-notation {
+  flex: 1;
+  font-family: monospace;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* --- GAME CONTROLS --- */
+.game-controls {
+  background: var(--color-chess-card);
+  border-radius: 10px;
+  padding: 12px;
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+}
+
+.game-controls-title {
+  color: white;
+  font-weight: bold;
+  font-size: 15px;
+  margin-bottom: 12px;
+}
+
+.controls-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+div.game-controls-wrapper {
+  background: var(--color-chess-card) !important;
+  border-radius: 10px !important;
+  padding: 16px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 14px !important;
+}
+
+div.game-controls-wrapper .gc-buttons-row {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 8px !important;
+  width: 100% !important;
+}
+
+div.game-controls-wrapper .gc-btn-container {
+  flex: 1 !important;
+  position: relative !important;
+}
+
+div.game-controls-wrapper .gc-btn {
+  width: 100% !important;
+  aspect-ratio: 1 / 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.game-status {
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid #4b5563;
+}
+
+.status-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.status-label {
+  color: #9ca3af;
+}
+
+.status-value {
+  color: white;
+  font-weight: bold;
+}
+
+.status-value--check {
+  color: #facc15;
+}
+
+.status-value--checkmate {
+  color: #f87171;
+}
+
+.status-value--active {
+  color: var(--color-chess-accent);
+}
+
+/* --- RESPONSIVE COMPONENT ADJUSTMENTS --- */
+@media (max-width: 767px) {
+  .player-panel {
+    padding: 10px;
+  }
+
+  .player-avatar {
+    width: 28px;
+    height: 28px;
+    font-size: 16px;
+  }
+
+  .player-name {
+    font-size: 13px;
+  }
+
+  .player-color-label {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 599px) {
+  .player-info {
+    margin-bottom: 8px;
+  }
+
+  .captured-pieces {
+    padding: 6px;
+  }
+}
