@@ -146,49 +146,4 @@ npm start
 | Tablet | 768px - 1023px | ✅ |
 | Mobile | < 768px | ✅ |
 
-## 🏗️ Architecture Highlights
 
-### Clean Architecture Layers
-```
-Presentation → Application → Domain → Infrastructure
-    (UI)         (Use Cases)   (Rules)   (Data/External)
-```
-
-### Key Design Patterns
-- **Repository Pattern** - Abstract data persistence
-- **Dependency Injection** - Loose coupling
-- **Use Case Pattern** - Encapsulated business logic
-- **Adapter Pattern** - External format conversion (FEN, PGN)
-
-### SOLID Principles Applied
-- **SRP**: Each class has single responsibility
-- **OCP**: Open for extension, closed for modification
-- **LSP**: Piece inheritance hierarchy
-- **ISP**: Focused interfaces (IGameRepository, IMoveValidator)
-- **DIP**: Depend on abstractions, not implementations
-
-## 🐛 Known Issues
-
-None currently! 🎉
-
-## 📊 Project Stats
-
-- **Lines of Code**: ~5,000+
-- **Components**: 15+
-- **Use Cases**: 6
-- **Supported Devices**: All screen sizes
-
-## 👨‍💻 Author
-
-**Daarn**
-- GitHub: [@Daarns](https://github.com/Daarns)
-
-Built with ❤️ for learning software architecture and TypeScript.
-
----
-
-⭐ **Star this repo** if you find it useful!
-
-## 📞 Questions or Feedback?
-
-Open an issue on [GitHub](https://github.com/Daarns/chess-game/issues)
